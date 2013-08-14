@@ -15,7 +15,6 @@ def home(request):
 
 @cache_page(60 * 60)
 def get_employees(request):
-    cache_timeout = int(cache.get("cache_timeout", 0))
     page = requests.get("http://stackexchange.com/about/team")
     soup = BeautifulSoup(page.content)
     containers = soup.find_all("div", class_="employee-photo-container")
