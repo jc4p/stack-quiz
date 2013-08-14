@@ -19,7 +19,7 @@ def get_employees(request):
     soup = BeautifulSoup(page.content)
     containers = soup.find_all("div", class_="employee-photo-container")
 
-    employees = {_get_from_container(x) for x in containers}
+    employees = [_get_from_container(x) for x in containers]
 
     return HttpResponse(json.dumps(employees), content_type='application/json')
 
