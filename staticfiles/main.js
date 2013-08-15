@@ -1,5 +1,5 @@
 $(function() {
-    var all_last_names = [];
+    var common_last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White", "Lopez", "Lee", "Gonzalez", "Harris", "Clark", "Lewis", "Robinson", "Walker", "Perez", "Hall", "Young", "Allen", "Sanchez", "Wright", "King", "Scott", "Green", "Baker", "Adams", "Nelson", "Hill", "Ramirez", "Campbell", "Mitchell", "Roberts", "Carter", "Phillips", "Evans", "Turner", "Torres", "Parker", "Collins", "Edwards", "Stewart", "Flores", "Morris", "Nguyen", "Murphy", "Rivera", "Cook", "Rogers", "Morgan", "Peterson", "Cooper", "Reed", "Bailey", "Bell", "Gomez", "Kelly", "Howard", "Ward", "Cox", "Diaz", "Richardson", "Wood", "Watson", "Brooks", "Bennett", "Gray", "James", "Reyes", "Cruz", "Hughes", "Price", "Myers", "Long", "Foster", "Sanders", "Ross", "Morales", "Powell", "Sullivan", "Russell", "Ortiz", "Jenkins", "Gutierrez", "Perry", "Butler", "Barnes", "Fisher"];
     var male_first_names = [];
     var female_first_names = [];
 
@@ -39,9 +39,7 @@ $(function() {
             var gender = full_list[indx]['gender'];
             var name_split = full_list[indx]['name'].split(" ");
             var first_name = name_split[0];
-            var last_name = name_split[1];
-            
-            all_last_names.push(last_name);
+
             if (gender === "M") {
                 male_first_names.push(first_name);
             }
@@ -127,7 +125,7 @@ $(function() {
         var first_name = getRandomFirstNameByGender(gender);
         var last_name = getRandomLastName();
 
-        if(first_name == forbidden_name.split(" ")[0] || last_name == forbidden_name.split(" ")[1]) {
+        if(first_name == forbidden_name.split(" ")[0]) {
             return generateRandomName(gender, forbidden_name);
         }
         
@@ -143,7 +141,7 @@ $(function() {
     }
 
     function getRandomLastName() {
-        return all_last_names[Math.floor(Math.random() * all_last_names.length)];
+        return common_last_names[Math.floor(Math.random() * common_last_names.length)];
     }
 
     // deprecated
