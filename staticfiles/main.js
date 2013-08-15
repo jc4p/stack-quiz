@@ -64,11 +64,12 @@ $(function() {
 
         $("#employee-photo").attr("src", currentEmployee['photo']);
 
-        var otherNames = getTwoNamesOtherThan(currentEmployee['name']);
+        var otherNames = getNNamesOtherThan(currentEmployee, 10);
 
         var names = [currentEmployee['name']];
-        names[1] = otherNames[0];
-        names[2] = otherNames[1];
+        for(var indx in otherNames) {
+            names.push(otherNames[indx]);
+        }
 
         names = shuffle(names);
 
@@ -79,17 +80,22 @@ $(function() {
             }
         }
 
+        if(parseInt(currentCorrectAnswer) > 2) {
+            currentCorrectAnswer = Math.floor(Math.random() * 3);
+            names[currentCorrectAnswer] = currentEmployee['name'];
+        }
+
         $("#option-a").text(names[0]);
         $("#option-b").text(names[1]);
         $("#option-c").text(names[2]);
     };
 
-    function getTwoNamesOtherThan(employeeName) {
+    function getNNamesOtherThan(employee, n) {
         var names = [];
 
-        while(names.length < 3) {
-            thisName =  getRandomEmployeeFromAll()['name'];
-            if(thisName != employeeName && names.indexOf(thisName) == -1) {
+        while(names.length <= n) {
+            thisName =  getRandomEmployeeFromAllByGender(employee['gender'])['name'];
+            if(thisName != employee['name'] && names.indexOf(thisName) == -1) {
                 names.push(thisName);
             }
         }
@@ -102,8 +108,14 @@ $(function() {
         return employee_list.splice(index, 1)[0];
     }
 
-    function getRandomEmployeeFromAll() {
-        return full_list[Math.floor(Math.random() * full_list.length)];
+    function getRandomEmployeeFromAllByGender(gender) {
+        emp = full_list[Math.floor(Math.random() * full_list.length)];
+
+        if(emp['gender'] !== gender) {
+            return getRandomEmployeeFromAllByGender(gender);
+        }
+        
+        return emp;
     }
 
     // http://stackoverflow.com/a/6274398/472021
