@@ -8,17 +8,22 @@
 </head>
 <body>
     <div class="container">
-        <h3>Please name the following person:</h3>
+        <div class="header-div">
+            <p class="lead">Correct: <span class="label label-success"><span class="success-amount"></span>/<span class="total-amount"></span></span></p>
+            <p class="lead">Incorrect:  <span class="label label-default"><span class="failure-amount"></span>/<span class="total-amount"></span></span></p>
+        </div>
+
+        <div id="response-success" class="alert alert-success" style="display: none;"><strong>Correct!</strong></div>
+        <div id="response-failure" class="alert" style="display: none;">Incorrect!<br>It was <strong><span class="correct-response"></span></strong></div>
 
         <div class="image-container">
             <img id="employee-photo" class="img-rounded" />
-            <!-- TODO: Put in a loading image here -->
         </div>
 
         <div class="options-container">
-            <button id="option-a" type="button" class="btn btn-default">Name A</button>
-            <button id="option-b" type="button" class="btn btn-default">Name B</button>
-            <button id="option-c" type="button" class="btn btn-default">Name C</button>
+            <button id="option-a" data-index="0" type="button" class="btn btn-default"></button>
+            <button id="option-b" data-index="1" type="button" class="btn btn-default"></button>
+            <button id="option-c" data-index="2" type="button" class="btn btn-default"></button>
         </div>
     </div>
 

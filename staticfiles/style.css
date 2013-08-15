@@ -6,3 +6,38 @@
 	text-align: center;
 	margin-top: 25px;
 }
+
+#option-b {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#employee-photo {
+    width: 164px;
+    height: 246px;
+}
+
+.header-div {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.header-div p {
+    display: inline-block;
+}
+
+.header-div p:first-child {
+    margin-right: 5px;
+}
+
+#response-success {
+    width: 300px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#response-failure {
+    width: 300px;
+    text-align: center;
+    margin: 0 auto;
+}
