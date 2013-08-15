@@ -1,4 +1,8 @@
 $(function() {
+    var all_last_names = [];
+    var male_first_names = [];
+    var female_first_names = [];
+
     var full_list = [];
     var employee_list = [];
     var currentEmployee;
@@ -10,9 +14,7 @@ $(function() {
         full_list = data;
         employee_list = full_list.slice();
 
-        $(".total-amount").text(employee_list.length);
-        updateScore();
-
+        setupInitialData();
         displayEmployee();
     });
 
@@ -31,6 +33,25 @@ $(function() {
 
         window.setTimeout(displayEmployee, 1000);
     });
+
+    function setupInitialData() {
+        for(var indx in full_list) {
+            var gender = full_list[indx]['gender'];
+            var name_split = full_list[indx]['name'].split(" ");
+            var first_name = name_split[0];
+            var last_name = name_split[1];
+            
+            all_last_names.push(last_name);
+            if (gender === "M") {
+                male_first_names.push(first_name);
+            }
+            else {
+                female_first_names.push(first_name);
+            }
+        }
+        $(".total-amount").text(employee_list.length);
+        updateScore();
+    }
 
     function showSuccess() {
         $("#response-success").slideDown(250, function() {
@@ -64,7 +85,8 @@ $(function() {
 
         $("#employee-photo").attr("src", currentEmployee['photo']);
 
-        var otherNames = getNNamesOtherThan(currentEmployee, 10);
+        var otherNames = getNRandomNamesOtherThan(currentEmployee, 10);
+        // var otherNames = ["test 1", "test 2", "test 3"];
 
         var names = [currentEmployee['name']];
         for(var indx in otherNames) {
@@ -90,6 +112,41 @@ $(function() {
         $("#option-c").text(names[2]);
     };
 
+    function getNRandomNamesOtherThan(employee, n) {
+        var names = [];
+
+        while(names.length <= n) {
+            thisName = generateRandomName(employee['gender'], employee['name']);
+            names.push(thisName);
+        }
+
+        return names;
+    }
+
+    function generateRandomName(gender, forbidden_name) {
+        var first_name = getRandomFirstNameByGender(gender);
+        var last_name = getRandomLastName();
+
+        if(first_name == forbidden_name.split(" ")[0] || last_name == forbidden_name.split(" ")[1]) {
+            return generateRandomName(gender, forbidden_name);
+        }
+        
+        return first_name + " " + last_name;
+    }
+
+    function getRandomFirstNameByGender(gender) {
+        if (gender == "M") {
+            return male_first_names[Math.floor(Math.random() * male_first_names.length)];    
+        }
+
+        return female_first_names[Math.floor(Math.random() * female_first_names.length)];
+    }
+
+    function getRandomLastName() {
+        return all_last_names[Math.floor(Math.random() * all_last_names.length)];
+    }
+
+    // deprecated
     function getNNamesOtherThan(employee, n) {
         var names = [];
 
@@ -108,6 +165,7 @@ $(function() {
         return employee_list.splice(index, 1)[0];
     }
 
+    // deprecated
     function getRandomEmployeeFromAllByGender(gender) {
         emp = full_list[Math.floor(Math.random() * full_list.length)];
 
