@@ -84,7 +84,6 @@ $(function() {
         $("#employee-photo").attr("src", currentEmployee['photo']);
 
         var otherNames = getNRandomNamesOtherThan(currentEmployee, 10);
-        // var otherNames = ["test 1", "test 2", "test 3"];
 
         var names = [currentEmployee['name']];
         for(var indx in otherNames) {
@@ -100,6 +99,8 @@ $(function() {
             }
         }
 
+        // If the correct answer is out of the set we're going to actually show
+        // force it back into the set.
         if(parseInt(currentCorrectAnswer) > 2) {
             currentCorrectAnswer = Math.floor(Math.random() * 3);
             names[currentCorrectAnswer] = currentEmployee['name'];
@@ -175,6 +176,7 @@ $(function() {
     }
 
     // http://stackoverflow.com/a/6274398/472021
+    // There's something ironic about this comment being in a Stack-related app.
     function shuffle(array) {
         var counter = array.length, temp, index;
 
