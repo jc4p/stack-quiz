@@ -1,34 +1,37 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Employee Recognition Quiz</title>
+    <title>SE Employee Flash Cards</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header-div">
-            <p class="lead">Correct: <span class="label label-success"><span class="success-amount"></span>/<span class="total-amount"></span></span></p>
-            <p class="lead">Incorrect:  <span class="label label-default"><span class="failure-amount"></span>/<span class="total-amount"></span></span></p>
+        <div class="row header-row">
+            <div class="col-md-6 col-md-offset-3">
+                <p class="lead">Tap card to flip. Tap again for next.</p>
+            </div>
+            <div class="col-md-3 counter-label">
+                <p class="lead"><span class="label label-info"><span class="seen-amount"></span>/<span class="total-amount"></span></span></p>
+            </div>
         </div>
-
-        <div id="response-success" class="alert alert-success" style="display: none;"><strong>Correct!</strong></div>
-        <div id="response-failure" class="alert" style="display: none;">Incorrect!<br>It was <strong><span class="correct-response"></span></strong></div>
-
-        <div class="image-container">
-            <img id="employee-photo" class="img-rounded" />
-        </div>
-
-        <div class="options-container">
-            <button id="option-a" data-index="0" type="button" class="btn btn-default"></button>
-            <button id="option-b" data-index="1" type="button" class="btn btn-default"></button>
-            <button id="option-c" data-index="2" type="button" class="btn btn-default"></button>
+        <div class="row main-row">
+            <div class="col-md-6 col-md-offset-3 card-container">
+                <div class="card">
+                    <div class="face front">
+                        <img id="employee-photo" class="img-rounded" />
+                    </div>
+                    <div class="face back">
+                        <p id="employee-name" class="lead"></p>
+                        <p id="employee-description"></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="//code.jquery.com/jquery.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/js/bootstrap.min.js"></script>
     <script src="/static/main.js"></script>
 </body>
 </html>
