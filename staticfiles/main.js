@@ -41,14 +41,14 @@ $(function() {
         }
         else if (curFilter == "Remote") {
             employee_list = full_list.filter(function(emp) {
-                return emp['location'] != "New York, NY" 
-                    && emp['location'] != "Denver, CO"
-                    && emp['location'] != "London, UK"; 
+                return emp['location'].indexOf("New York") == -1 
+                    && emp['location'].indexOf("Denver") == -1
+                    && emp['location'].indexOf("London") == -1;
             });
         }
         else {
             employee_list = full_list.filter(function(emp) {
-                return emp['location'] == curFilter;
+                return emp['location'].indexOf(curFilter) != -1;
             });
         }
 
