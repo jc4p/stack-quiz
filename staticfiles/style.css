@@ -7,6 +7,25 @@
     margin-right: 5px;
 }
 
+#response-container {
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+#response-container button {
+    width: 100px;
+}
+
+#response-container button:first-of-type {
+    margin-right: 10px;
+}
+
+#end-container {
+    text-align: center;
+    display: none;
+}
+
 .header-row {
     margin-top: 20px;
     margin-bottom: 10px;

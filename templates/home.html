@@ -10,11 +10,6 @@
     <div class="container">
         <div class="row header-row">
             <div class="col-md-6 col-md-offset-3">
-                <p class="lead">Tap card to flip. Tap again for next.</p>
-            </div>
-        </div>
-        <div class="row header-row">
-            <div class="col-md-6 col-md-offset-3">
                 <label id="select-drilldown-label" for="select-drilldown">Location filter:</label>
                 <select id="select-drilldown">
                     <option value="all">All Employees</option>
@@ -25,7 +20,7 @@
                 </select>
             </div>
             <div class="col-md-3 counter-label">
-                <p class="lead"><span class="label label-info"><span class="seen-amount"></span>/<span class="total-amount"></span></span></p>
+                <p class="lead"><span class="label label-success"><span class="correct-amount"></span>/<span class="total-amount"></span></span></p>
             </div>
         </div>
         <div class="row main-row">
@@ -39,6 +34,15 @@
                         <p id="employee-description"></p>
                     </div>
                 </div>
+            </div>
+            <div id="response-container" class="col-md-6 col-md-offset-3">
+                <p class="lead">Get it right?</p>
+                <button id="button-right" type="button" class="btn btn-success">Yep!</button>
+                <button id="button-wrong" type="button" class="btn btn-danger">Nope</button>
+            </div>
+            <div id="end-container" class="col-md-6 col-md-offset-3">
+                <p class="lead">All done!</p>
+                <p id="summary"></p>
             </div>
         </div>
     </div>

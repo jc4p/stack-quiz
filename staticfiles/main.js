@@ -1,8 +1,11 @@
 $(function() {
     var full_list = [];
     var employee_list = [];
+    var wrong_list = [];
     var numSeen = 0;
+    var numRight = 0;
     var curFilter = "all";
+    var currentEmployee;
 
     $.get("/get-employees/", function(data) {
         full_list = data;
@@ -14,17 +17,10 @@ $(function() {
 
     $(".card .front").on("click", function(e) {
         $('.card').addClass('flipped');
-    });
-
-    $(".card .back").on("click", function(e) {
-        $("#employee-photo").attr("src", "");
-        $('.card').removeClass('flipped');
         
         window.setTimeout(function() {
-            numSeen++;
-            updateScore();
-            displayEmployee();
-        }, 500);
+            $("#response-container").show();
+        }, 400);
     });
 
     $("#select-drilldown").change(function(e) {
@@ -33,6 +29,27 @@ $(function() {
             filterTo(selection);
         }
     });
+    
+    $("#button-right").on("click", function(e) {
+       numRight++;
+       showNext();
+    });
+    
+    $("#button-wrong").on("click", function(e) {
+        wrong_list.push(currentEmployee);
+        showNext(); 
+    });
+    
+    function showNext() {
+        $("#response-container").hide();
+        $("#employee-photo").attr("src", "");
+        $('.card').removeClass('flipped');
+        window.setTimeout(function() {
+            numSeen++;
+            updateScore();
+            displayEmployee();
+        }, 500);
+    }
 
     function filterTo(filter) {
         curFilter = filter;
@@ -59,21 +76,21 @@ $(function() {
     function setupInitialData() {
         numSeen = 0;
         $(".total-amount").text(employee_list.length);
-        $(".seen-amount").text("0");
+        $(".correct-amount").text("0");
         updateScore();
     }
 
     function updateScore() {
-        $(".seen-amount").text(numSeen);
+        $(".correct-amount").text(numRight);
     }
 
     var displayEmployee = function displayEmployee() {
         if(employee_list.length === 0) {
-            alert("All done! Refresh to repeat.");
+            showEnd();
             return;
         }
 
-        var currentEmployee = getRandomEmployee();
+        currentEmployee = getRandomEmployee();
 
         $("#employee-photo").attr("src", currentEmployee['photo']);
         $("#employee-name").text(currentEmployee['name']);
@@ -83,5 +100,20 @@ $(function() {
     function getRandomEmployee() {
         var index = Math.floor(Math.random() * employee_list.length);
         return employee_list.splice(index, 1)[0];
+    }
+    
+    function showEnd() {
+        $(".card-container").hide();
+        $("#end-container").show();
+        
+        if (wrong_list.length == 0) {
+            $("#summary").text("Wow, you got every one of them right!");
+        }
+        else {
+            $("#summary").html("You missed " + wrong_list.length + " people:<br>");
+            for(i = 0; i < wrong_list.length; i++) {
+                $("#summary").append(wrong_list[i]['name'] + "<br>");
+            }
+        }
     }
 });
