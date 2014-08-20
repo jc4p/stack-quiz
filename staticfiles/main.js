@@ -48,7 +48,7 @@ $(function() {
         }
         else {
             employee_list = full_list.filter(function(emp) {
-                return emp['location'].indexOf(curFilter) != -1;
+                return emp['location'].indexOf(curFilter) > -1;
             });
         }
 
