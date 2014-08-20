@@ -3,6 +3,10 @@
     height: 246px;
 }
 
+#select-drilldown-label {
+    margin-right: 5px;
+}
+
 .header-row {
     margin-top: 20px;
     margin-bottom: 10px;

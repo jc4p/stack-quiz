@@ -2,6 +2,7 @@ $(function() {
     var full_list = [];
     var employee_list = [];
     var numSeen = 0;
+    var curFilter = "all";
 
     $.get("/get-employees/", function(data) {
         full_list = data;
@@ -26,7 +27,37 @@ $(function() {
         }, 500);
     });
 
+    $("#select-drilldown").change(function(e) {
+        selection = $("#select-drilldown").val();
+        if (selection != curFilter) {
+            filterTo(selection);
+        }
+    });
+
+    function filterTo(filter) {
+        curFilter = filter;
+        if (curFilter == "all") {
+            employee_list = full_list.slice();
+        }
+        else if (curFilter == "Remote") {
+            employee_list = full_list.filter(function(emp) {
+                return emp['location'] != "New York, NY" 
+                    && emp['location'] != "Denver, CO"
+                    && emp['location'] != "London, UK"; 
+            });
+        }
+        else {
+            employee_list = full_list.filter(function(emp) {
+                return emp['location'] == curFilter;
+            });
+        }
+
+        setupInitialData();
+        displayEmployee();
+    }
+
     function setupInitialData() {
+        numSeen = 0;
         $(".total-amount").text(employee_list.length);
         $(".seen-amount").text("0");
         updateScore();
