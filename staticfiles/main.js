@@ -30,6 +30,15 @@ $(function() {
         }
     });
     
+    $(document).keyup(function(e) {
+        if (e.keyCode == 32) { // space bar
+            if (!$("#response-container").is(":visible")) {
+                // if the card isn't flipped, flip it
+                $(".card .front").click();
+            }
+        }
+    });
+
     $("#button-right").on("click", function(e) {
        numRight++;
        showNext();
