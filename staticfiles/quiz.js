@@ -9,6 +9,7 @@ $(function() {
     var currentCorrectAnswer;
     var numSuccess = 0;
     var numFailure = 0;
+    var curFilter = "all";
 
     $.get("/get-employees/", function(data) {
         full_list = data;
@@ -16,6 +17,13 @@ $(function() {
 
         setupInitialData();
         displayEmployee();
+    });
+    
+    $("#select-drilldown").change(function(e) {
+        selection = $("#select-drilldown").val();
+        if (selection != curFilter) {
+            filterTo(selection);
+        }
     });
 
     $(".btn-default").on("click", function(e) {
@@ -33,6 +41,28 @@ $(function() {
 
         window.setTimeout(displayEmployee, 1000);
     });
+    
+    function filterTo(filter) {
+        curFilter = filter;
+        if (curFilter == "all") {
+            employee_list = full_list.slice();
+        }
+        else if (curFilter == "Remote") {
+            employee_list = full_list.filter(function(emp) {
+                return emp['location'].indexOf("New York") == -1 
+                    && emp['location'].indexOf("Denver") == -1
+                    && emp['location'].indexOf("London") == -1;
+            });
+        }
+        else {
+            employee_list = full_list.filter(function(emp) {
+                return emp['location'].indexOf(curFilter) > -1;
+            });
+        }
+
+        setupInitialData();
+        displayEmployee();
+    }
 
     function setupInitialData() {
         for(var indx in full_list) {
