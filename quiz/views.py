@@ -13,6 +13,10 @@ def home(request):
     return render_to_response("home.html", {}, context_instance=RequestContext(request))
 
 
+def quiz(request):
+    return render_to_response("quiz.html", {}, context_instance=RequestContext(request))
+
+
 @cache_page(24 * 60 * 60)
 def get_employees(request):
     """
@@ -37,6 +41,9 @@ def get_employees(request):
         # If they have a nickname, add it in.
         if emp['nickname']:
             employee['nickname'] = emp['nickname']
+        # Trim gender to M/F
+        if employee['gender']:
+            employee['gender'] = employee['gender'][0]
         # I don't want people without pictures.
         if not "placeholder" in employee['photo']:
             employees.append(employee)

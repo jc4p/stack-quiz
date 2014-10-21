@@ -1,0 +1,47 @@
+.image-container {
+    text-align: center;
+}
+
+.options-container {
+    text-align: center;
+    margin-top: 25px;
+}
+
+#option-b {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#employee-photo {
+    margin-top: 48px;
+}
+
+.header-div {
+    margin-top: 20px;
+}
+
+.ticker-container {
+    text-align: right; 
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.header-div p {
+    display: inline-block;
+}
+
+.header-div p:first-child {
+    margin-right: 5px;
+}
+
+#response-success {
+    width: 300px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#response-failure {
+    width: 300px;
+    text-align: center;
+    margin: 0 auto;
+}
