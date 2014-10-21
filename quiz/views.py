@@ -4,6 +4,8 @@ from django.template    import RequestContext
 
 from django.views.decorators.cache import cache_page
 
+import os
+import requests
 import json
 
 
@@ -16,21 +18,27 @@ def get_employees(request):
     """
     Retrieves a JSON list of employees fro the server and caches it for 1 day
     """
-    from bs4 import BeautifulSoup
-    import requests
 
-    page = requests.get("http://stackexchange.com/about/team")
-    soup = BeautifulSoup(page.content)
-    containers = soup.find_all("div", class_="employee-photo-container")
+    BAMBOO_URL = "https://api.bamboohr.com/api/gateway.php/stackexchange/v1/reports/1931?format=json"
+    BAMBOO_API_KEY = os.environ.get("BAMBOO_API_KEY", None)
+    if not BAMBOO_API_KEY:
+        raise ValueError("No Bamboo API Key")
 
-    employees = [_get_from_container(x) for x in containers]
+    bamboo_auth = (BAMBOO_API_KEY, "x")
+
+    page = requests.get(BAMBOO_URL, auth=bamboo_auth)
+    emps = page.json()['employees']
+
+    employees = []
+    for emp in emps:
+        # Required fields
+        employee = {'name': emp['fullName1'], 'photo': emp['photoUrl'], 'position': emp['jobTitle'],
+                    'location': emp['location'], 'gender': emp['gender']}
+        # If they have a nickname, add it in.
+        if emp['nickname']:
+            employee['nickname'] = emp['nickname']
+        # I don't want people without pictures.
+        if not "placeholder" in employee['photo']:
+            employees.append(employee)
 
     return HttpResponse(json.dumps(employees), content_type='application/json')
-
-
-def _get_from_container(container):
-    name = container.find("div", "employee-name").string
-    photo = container.find("img", "employee-photo")['src']
-    position = container.find("div", "employee-position").string
-    location = container.find("div", "employee-location").string
-    return {"name": name, "photo": photo, "position": position, "location": location}

@@ -102,8 +102,16 @@ $(function() {
         currentEmployee = getRandomEmployee();
 
         $("#employee-photo").attr("src", currentEmployee['photo']);
-        $("#employee-name").text(currentEmployee['name']);
         $("#employee-description").text(currentEmployee['position'] + " - " + currentEmployee['location']);
+        if (currentEmployee.hasOwnProperty("nickname")) {
+            firstName = currentEmployee['name'].split(" ")[0]
+            rest = currentEmployee['name'].substring(firstName.length + 1);
+
+            $("#employee-name").text(firstName + " \"" + currentEmployee['nickname'] + "\" " + rest);
+        }
+        else {
+            $("#employee-name").text(currentEmployee['name']);
+        }
     };
 
     function getRandomEmployee() {
