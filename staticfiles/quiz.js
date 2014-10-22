@@ -1,16 +1,19 @@
+var common_last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White", "Lopez", "Lee", "Gonzalez", "Harris", "Clark", "Lewis", "Robinson", "Walker", "Perez", "Hall", "Young", "Allen", "Sanchez", "Wright", "King", "Scott", "Green", "Baker", "Adams", "Nelson", "Hill", "Ramirez", "Campbell", "Mitchell", "Roberts", "Carter", "Phillips", "Evans", "Turner", "Torres", "Parker", "Collins", "Edwards", "Stewart", "Flores", "Morris", "Nguyen", "Murphy", "Rivera", "Cook", "Rogers", "Morgan", "Peterson", "Cooper", "Reed", "Bailey", "Bell", "Gomez", "Kelly", "Howard", "Ward", "Cox", "Diaz", "Richardson", "Wood", "Watson", "Brooks", "Bennett", "Gray", "James", "Reyes", "Cruz", "Hughes", "Price", "Myers", "Long", "Foster", "Sanders", "Ross", "Morales", "Powell", "Sullivan", "Russell", "Ortiz", "Jenkins", "Gutierrez", "Perry", "Butler", "Barnes", "Fisher"];
+var male_first_names = [];
+var female_first_names = [];
+
+var employee_list = [];
+var full_list = [];
+var wrong_list = [];
+var currentEmployee;
+var currentCorrectAnswer;
+var numSuccess = 0;
+var numFailure = 0;
+var locationFilter = "all";
+var departmentFilter = "all";
+
+
 $(function() {
-    var common_last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White", "Lopez", "Lee", "Gonzalez", "Harris", "Clark", "Lewis", "Robinson", "Walker", "Perez", "Hall", "Young", "Allen", "Sanchez", "Wright", "King", "Scott", "Green", "Baker", "Adams", "Nelson", "Hill", "Ramirez", "Campbell", "Mitchell", "Roberts", "Carter", "Phillips", "Evans", "Turner", "Torres", "Parker", "Collins", "Edwards", "Stewart", "Flores", "Morris", "Nguyen", "Murphy", "Rivera", "Cook", "Rogers", "Morgan", "Peterson", "Cooper", "Reed", "Bailey", "Bell", "Gomez", "Kelly", "Howard", "Ward", "Cox", "Diaz", "Richardson", "Wood", "Watson", "Brooks", "Bennett", "Gray", "James", "Reyes", "Cruz", "Hughes", "Price", "Myers", "Long", "Foster", "Sanders", "Ross", "Morales", "Powell", "Sullivan", "Russell", "Ortiz", "Jenkins", "Gutierrez", "Perry", "Butler", "Barnes", "Fisher"];
-    var male_first_names = [];
-    var female_first_names = [];
-
-    var full_list = [];
-    var employee_list = [];
-    var currentEmployee;
-    var currentCorrectAnswer;
-    var numSuccess = 0;
-    var numFailure = 0;
-    var curFilter = "all";
-
     $.get("/get-employees/", function(data) {
         full_list = data;
         employee_list = full_list.slice();
@@ -19,35 +22,54 @@ $(function() {
         displayEmployee();
     });
     
-    $("#select-drilldown").change(function(e) {
-        selection = $("#select-drilldown").val();
-        if (selection != curFilter) {
-            filterTo(selection);
+    $("#location-drilldown").change(function(e) {
+        selection = $("#location-drilldown").val();
+        if (selection != locationFilter) {
+            locationFilter = selection;
+            filterTo();
         }
+    });
+
+    $("#department-drilldown").change(function(e) {
+        selection = $("#department-drilldown").val();
+        if (selection != departmentFilter) {
+            departmentFilter = selection;
+            filterTo();
+        }
+    });
+
+    $("#filters-toggle").on("click", function(e) {
+        $("#filters-container").slideToggle();
     });
 
     $(".btn-default").on("click", function(e) {
         index = $(e.currentTarget).data("index");
+        wasCorrect = true;
         if(index == String(currentCorrectAnswer)) {
             numSuccess++;
-            showSuccess();
         }
         else {
+            wrong_list.push(currentEmployee);
             numFailure++;
-            showFailure();
+            wasCorrect = false;
         }
 
         updateScore();
+        showResult(wasCorrect);
+        $(".card").addClass("flipped");
+    });
 
-        window.setTimeout(displayEmployee, 1000);
+    $(".card .back").on("click", function(e) {
+        displayEmployee();
+        $(".card").removeClass("flipped");
     });
     
-    function filterTo(filter) {
-        curFilter = filter;
-        if (curFilter == "all") {
+    function filterTo() {
+        // Location first
+        if (locationFilter == "all") {
             employee_list = full_list.slice();
         }
-        else if (curFilter == "Remote") {
+        else if (locationFilter == "Remote") {
             employee_list = full_list.filter(function(emp) {
                 return emp['location'].indexOf("New York") == -1 
                     && emp['location'].indexOf("Denver") == -1
@@ -56,7 +78,14 @@ $(function() {
         }
         else {
             employee_list = full_list.filter(function(emp) {
-                return emp['location'].indexOf(curFilter) > -1;
+                return emp['location'].indexOf(locationFilter) > -1;
+            });
+        }
+
+        // Then Department
+        if (departmentFilter != "all") {
+            employee_list = employee_list.filter(function(emp) {
+                return emp['department'] == departmentFilter;
             });
         }
 
@@ -78,24 +107,30 @@ $(function() {
             }
         }
         $(".total-amount").text(employee_list.length);
+        numSuccess = 0;
+        numFailure = 0;
         updateScore();
     }
 
-    function showSuccess() {
-        $("#response-success").slideDown(250, function() {
-            window.setTimeout(function() {
-                $("#response-success").slideUp(250);
-            }, 500);
-        });
-    }
+    function showResult(wasCorrect) {
+        $("#employee-photo-back").attr("src", currentEmployee['photo']);
+        $("#employee-description").text(currentEmployee['position'] + " - " + currentEmployee['location']);
+        if (currentEmployee.hasOwnProperty("nickname")) {
+            firstName = currentEmployee['name'].split(" ")[0]
+            rest = currentEmployee['name'].substring(firstName.length + 1);
 
-    function showFailure() {
-        $("#response-failure .correct-response").text(currentEmployee['name']);
-        $("#response-failure").slideDown(250, function() {
-            window.setTimeout(function() {
-                $("#response-failure").slideUp(250);
-            }, 500);
-        });
+            $("#employee-name").text(firstName + " \"" + currentEmployee['nickname'] + "\" " + rest);
+        }
+        else {
+            $("#employee-name").text(currentEmployee['name']);
+        }
+
+        if (wasCorrect) {
+            $("#employee-name").addClass("correct");
+        }
+        else {
+            $("#employee-name").removeClass("correct");
+        }
     }
 
     function updateScore() {
@@ -105,13 +140,13 @@ $(function() {
 
     var displayEmployee = function displayEmployee() {
         if(employee_list.length === 0) {
-            alert("All done!");
+            showEnd();
             return;
         }
 
         currentEmployee = getRandomEmployee();
 
-        $("#employee-photo").attr("src", currentEmployee['photo']);
+        $("#employee-photo-front").attr("src", currentEmployee['photo']);
 
         var otherNames = getNRandomNamesOtherThan(currentEmployee, 10);
 
@@ -140,6 +175,21 @@ $(function() {
         $("#option-b").text(names[1]);
         $("#option-c").text(names[2]);
     };
+
+    function showEnd() {
+        $(".card-container").hide();
+        $("#end-container").show();
+
+        if (wrong_list.length == 0) {
+            $("#summary").text("Wow, you got every one of them right!");
+        }
+        else {
+            $("#summary").html("You missed " + wrong_list.length + " people:<br>");
+            for(i = 0; i < wrong_list.length; i++) {
+                $("#summary").append(wrong_list[i]['name'] + "<br>");
+            }
+        }
+    }
 
     function getNRandomNamesOtherThan(employee, n) {
         var names = [];

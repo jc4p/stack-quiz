@@ -9,32 +9,67 @@
 <body>
     <div class="container">
         <div class="row header-row">
+            <div class="col-md-4 col-md-offset-4">
+                <span><a href="/">Flash Cards</a></span> ●
+                <span><strong>Quiz</strong></span>
+            </div>
+        </div>
+        <div class="row header-row">
             <div class="header-div" style="text-align: center;">
-                <label id="select-drilldown-label" for="select-drilldown">Location filter:</label>
-                <select id="select-drilldown">
-                    <option value="all">All Employees</option>
-                    <option value="New York">New York, NY</option>
-                    <option value="London">London, UK</option>
-                    <option value="Denver">Denver, CO</option>
-                    <option>Remote</option>
-                </select>
-            <div class="ticker-container">
-                <p class="lead">Correct: <span class="label label-success"><span class="success-amount"></span>/<span class="total-amount"></span></span></p>
-                <p class="lead">Incorrect:  <span class="label label-default"><span class="failure-amount"></span>/<span class="total-amount"></span></span></p>
+                <div class="ticker-container">
+                    <p class="lead">Correct: <span class="label label-success"><span class="success-amount"></span>/<span class="total-amount"></span></span></p>
+                    <p class="lead">Incorrect:  <span class="label label-default"><span class="failure-amount"></span>/<span class="total-amount"></span></span></p>
+                </div>
             </div>
+        </div>
+        <div class="row filter-row">
+            <div class="col-md-4 col-md-offset-4" style="text-align: center;">
+                <p><a href="#" id="filters-toggle">Show / Hide Filters</a></p>
+                <div id="filters-container">
+                    <label id="filter-drilldown-label" for="location-drilldown">Location:</label>
+                    <select id="location-drilldown">
+                        <option value="all">All Locations</option>
+                        <option value="New York">New York, NY</option>
+                        <option value="London">London, UK</option>
+                        <option value="Denver">Denver, CO</option>
+                        <option>Remote</option>
+                    </select>
+                    <br />
+                    <label id="department-drilldown-label" for="department-drilldown">Department:</label>
+                    <select id="department-drilldown">
+                        <option value="all">All Departments</option>
+                        <option value="Product">Product Sales</option>
+                        <option value="Dev">Dev</option>
+                        <option value="Operations">Operations</option>
+                        <option value="Community">Community</option>
+                        <option value="Executive">Executive</option>
+                    </select>
+                </div>
             </div>
-            <div id="response-success" class="alert alert-success" style="display: none;"><strong>Correct!</strong></div>
-            <div id="response-failure" class="alert" style="display: none;">Incorrect!<br>It was <strong><span class="correct-response"></span></strong></div>
         </div>
         <div class="row main-row">
-            <div class="image-container">
-                <img id="employee-photo" class="img-rounded" />
-            </div>
+            <div class="card-container col-md-6 col-md-offset-3">
+                <div class="card">
+                    <div class="face front">
+                        <div class="image-container">
+                            <img id="employee-photo-front" />
+                        </div>
 
-            <div class="options-container">
-                <button id="option-a" data-index="0" type="button" class="btn btn-default"></button>
-                <button id="option-b" data-index="1" type="button" class="btn btn-default"></button>
-                <button id="option-c" data-index="2" type="button" class="btn btn-default"></button>
+                        <div class="options-container">
+                            <button id="option-a" data-index="0" type="button" class="btn btn-default"></button>
+                            <button id="option-b" data-index="1" type="button" class="btn btn-default"></button>
+                            <button id="option-c" data-index="2" type="button" class="btn btn-default"></button>
+                        </div>
+                    </div>
+                    <div class="face back">
+                        <p id="employee-name" class="lead"></p>
+                        <p id="employee-description"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="end-container" class="col-md-6 col-md-offset-3">
+                <p class="lead">All done!</p>
+                <p id="summary"></p>
             </div>
         </div>
     </div>

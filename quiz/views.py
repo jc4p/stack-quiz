@@ -37,7 +37,7 @@ def get_employees(request):
     for emp in emps:
         # Required fields
         employee = {'name': emp['fullName1'], 'photo': emp['photoUrl'], 'position': emp['jobTitle'],
-                    'location': emp['location'], 'gender': emp['gender']}
+                    'location': emp['location'], 'gender': emp['gender'], 'department': emp['division']}
         # If they have a nickname, add it in.
         if emp['nickname']:
             employee['nickname'] = emp['nickname']
