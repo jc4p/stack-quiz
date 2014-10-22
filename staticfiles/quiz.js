@@ -192,9 +192,10 @@ $(function() {
     }
 
     function getNRandomNamesOtherThan(employee, n) {
-        var names = [];
+        var names = getNRealEmployeeNamesOtherThan(employee, Math.floor(n/2));
 
-        while(names.length <= n) {
+        while(names.length <= n) {      
+            // make a fake name
             thisName = generateRandomName(employee['gender'], employee['name']);
             names.push(thisName);
         }
@@ -225,8 +226,7 @@ $(function() {
         return common_last_names[Math.floor(Math.random() * common_last_names.length)];
     }
 
-    // deprecated
-    function getNNamesOtherThan(employee, n) {
+    function getNRealEmployeeNamesOtherThan(employee, n) {
         var names = [];
 
         while(names.length <= n) {
