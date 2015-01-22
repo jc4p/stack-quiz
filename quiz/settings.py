@@ -1,5 +1,4 @@
 # Django settings for quiz project.
-import dj_database_url
 import os
 import sys
 
