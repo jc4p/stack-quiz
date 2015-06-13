@@ -44,8 +44,8 @@ def get_employees(request):
         # Trim gender to M/F
         if employee['gender']:
             employee['gender'] = employee['gender'][0]
-        # I don't want people without pictures.
-        if not "placeholder" in employee['photo']:
+        # I don't want people without pictures and people without a location set
+        if not "placeholder" in employee['photo'] and employee['location']:
             employees.append(employee)
 
     return HttpResponse(json.dumps(employees), content_type='application/json')
