@@ -36,15 +36,14 @@ def get_employees(request):
     employees = []
     for emp in emps:
         # Required fields
-        employee = {'name': emp['fullName1'], 'photo': emp['photoUrl'], 'position': emp['jobTitle'],
+        name = emp['nickname'] if emp.get('nickname') else emp['firstName']
+        name += " " + emp['lastName']
+        employee = {'name': name, 'photo': emp['photoUrl'], 'position': emp['jobTitle'],
                     'location': emp['location'], 'gender': emp['gender'], 'department': emp['division']}
-        # If they have a nickname, add it in.
-        if emp['nickname']:
-            employee['nickname'] = emp['nickname']
         # Trim gender to M/F
         if employee['gender']:
             employee['gender'] = employee['gender'][0]
-        # I don't want people without pictures and people without a location set
+        # I don't want people without pictures or people without a location set
         if not "placeholder" in employee['photo'] and employee['location']:
             employees.append(employee)
 
