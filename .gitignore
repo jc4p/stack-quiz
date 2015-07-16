@@ -3,3 +3,5 @@ venv
 *.DS_Store
 .env
 cache/.+/*
+pubring.gpg~
+secring.gpg
