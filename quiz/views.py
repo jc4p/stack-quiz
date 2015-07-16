@@ -7,6 +7,7 @@ from django.views.decorators.cache import cache_page
 import os
 import requests
 import json
+import logging
 
 
 def home(request):
@@ -24,7 +25,17 @@ def get_employees(request):
     """
 
     BAMBOO_URL = "https://api.bamboohr.com/api/gateway.php/stackexchange/v1/reports/1931?format=json"
-    BAMBOO_API_KEY = os.environ.get("BAMBOO_API_KEY", None)
+
+    try:
+        keyfile_path=os.path.join(os.path.sep,'opt','quiz','quiz','key.json')
+        with open(keyfile_path,'r') as f:
+            creds=json.loads(f.read())
+        BAMBOO_API_KEY = creds['BAMBOO_API_KEY']
+        logging.info("Received bamboo key from key.json file.")
+    except Exception:
+        logging.error("Could not find keyfile, so trying the environment variable instead.")
+        BAMBOO_API_KEY = os.environ.get('BAMBOO_API_KEY')
+        
     if not BAMBOO_API_KEY:
         raise ValueError("No Bamboo API Key")
 
