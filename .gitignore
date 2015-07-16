@@ -5,3 +5,4 @@ venv
 cache/.+/*
 pubring.gpg~
 secring.gpg
+quiz/key.json
