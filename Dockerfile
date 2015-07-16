@@ -7,6 +7,6 @@ ADD . /opt/quiz/
 WORKDIR /opt/quiz/
 RUN pip install -r requirements.txt
 EXPOSE 8000
-CMD ["/usr/local/bin/gunicorn","-b '0.0.0.0:8000'", "quiz.wsgi"]
+CMD ["/usr/local/bin/gunicorn","-b","0.0.0.0:8000", "quiz.wsgi"]
 
 
