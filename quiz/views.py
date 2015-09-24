@@ -12,6 +12,8 @@ import json
 def home(request):
     return render_to_response("home.html", {}, context_instance=RequestContext(request))
 
+def camp(request):
+    return render_to_response("home.html", {"camp_only": True}, context_instance=RequestContext(request))
 
 def quiz(request):
     return render_to_response("quiz.html", {}, context_instance=RequestContext(request))
@@ -32,17 +34,20 @@ def get_employees(request):
 
     page = requests.get(BAMBOO_URL, auth=bamboo_auth)
     emps = page.json()['employees']
-
+    camp_only = request.GET.get("camp", "false") == "true"
     employees = []
     for emp in emps:
         # Required fields
         name = emp['nickname'] if emp.get('nickname') else emp['firstName']
         name += " " + emp['lastName']
+        camp = emp['customCompanyEvents'] and '2015 Product Meetup' in emp['customCompanyEvents']
         employee = {'name': name, 'photo': emp['photoUrl'], 'position': emp['jobTitle'],
                     'location': emp['location'], 'gender': emp['gender'], 'department': emp['division']}
         # Trim gender to M/F
         if employee['gender']:
             employee['gender'] = employee['gender'][0]
+        if camp_only and not camp:
+                continue
         # I don't want people without pictures or people without a location set
         if not "placeholder" in employee['photo'] and employee['location']:
             employees.append(employee)

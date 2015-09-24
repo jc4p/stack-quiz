@@ -20,5 +20,6 @@ urlpatterns = patterns('',
 
     url(r'^$',              views.home,     name="home"),
     url(r'^quiz/',          views.quiz),
+    url(r'^camp/',          views.camp),
     url(r'^get-employees/',	views.get_employees),
 )
