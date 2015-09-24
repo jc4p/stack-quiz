@@ -3,3 +3,6 @@ venv
 *.DS_Store
 .env
 cache/.+/*
+pubring.gpg~
+secring.gpg
+quiz/key.json
