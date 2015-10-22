@@ -1,5 +1,7 @@
+den-linbuild01
 kasra@keybase.io
 nextra
+nyhq-linbuild01
 pete
 selfcommit
 teamcity
