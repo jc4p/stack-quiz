@@ -10,12 +10,13 @@ spec:
   replicas: 1
   selector:
     app: stackquiz
-    environment: development    
+    environment: development 
   template:
     metadata:
       labels:
         app: stackquiz
         environment: development    
+        deployment: ::VER::  
     spec:
       containers:
       - image: docker-registry.ds.stackexchange.com/pgrace/sei-stackquiz:latest
