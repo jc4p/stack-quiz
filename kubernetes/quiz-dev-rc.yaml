@@ -4,7 +4,7 @@ metadata:
   labels:
     app: stackquiz
     environment: development    
-  name: stackquiz-dev-rc
+  name: stackquiz-dev-rc-::VER::
   namespace: default
 spec:
   replicas: 1
