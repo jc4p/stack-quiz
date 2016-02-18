@@ -12,12 +12,14 @@ spec:
     app: stackquiz
     environment: development 
     commit: "::COMMIT::"
+    buildTimestamp: "::TIMESTAMP::"
   template:
     metadata:
       labels:
         app: stackquiz
         environment: development    
         commit: "::COMMIT::"
+        buildTimestamp: "::TIMESTAMP::"
     spec:
       containers:
       - image: docker-registry.ds.stackexchange.com/pgrace/sei-stackquiz:latest
