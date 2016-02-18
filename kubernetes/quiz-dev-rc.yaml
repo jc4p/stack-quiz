@@ -4,20 +4,20 @@ metadata:
   labels:
     app: stackquiz
     environment: development    
-  name: stackquiz-dev-rc-::VER::
+  name: stackquiz-dev-rc-::BUILDNUM::
   namespace: default
 spec:
   replicas: 1
   selector:
     app: stackquiz
     environment: development 
-    deployment: ::VER::  
+    commit: "::COMMIT::"
   template:
     metadata:
       labels:
         app: stackquiz
         environment: development    
-        deployment: ::VER::  
+        commit: "::COMMIT::"
     spec:
       containers:
       - image: docker-registry.ds.stackexchange.com/pgrace/sei-stackquiz:latest
