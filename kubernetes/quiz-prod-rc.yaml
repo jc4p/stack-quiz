@@ -1,39 +1,28 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  labels:
-    app: stackquiz
-    environment: development    
-  name: stackquiz-dev-rc-::BUILDNUM::
-  namespace: default
+  name: stackquiz-prod-rc-::BUILDNUM::
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     app: stackquiz
-    environment: development 
+    environment: production
     commit: "::COMMIT::"
     buildTimestamp: "::TIMESTAMP::"
   template:
     metadata:
       labels:
         app: stackquiz
-        environment: development    
+        environment: production
         commit: "::COMMIT::"
         buildTimestamp: "::TIMESTAMP::"
     spec:
       containers:
-      - image: docker-registry.ds.stackexchange.com/pgrace/sei-stackquiz:latest
+      - image: gcr.io/general-gke-cluster/stackquiz:latest
         imagePullPolicy: Always
-        livenessProbe:
-          httpGet:
-            path: /_health/
-            port: 8000
-            scheme: HTTP
-          initialDelaySeconds: 120
-          timeoutSeconds: 15 
         name: stackquiz
         ports:
-        - containerPort: 3000
+        - containerPort: 8000
           protocol: TCP
       dnsPolicy: ClusterFirst
       restartPolicy: Always
