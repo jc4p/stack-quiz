@@ -1,4 +1,5 @@
 den-linbuild01
+den-linbuild02
 kasra@keybase.io
 nextra
 nyhq-linbuild01
