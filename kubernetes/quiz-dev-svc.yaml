@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stackquiz-dev-svc
+  labels:
+    app: stackquiz
+    environment: development    
+spec:
+  selector:
+    app: stackquiz
+    environment: development    
+  ports:
+  - port: 8000
+    targetPort: 8000
+    nodePort: 31006
+  type: "NodePort"      
