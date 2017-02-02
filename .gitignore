@@ -6,3 +6,4 @@ cache/.+/*
 pubring.gpg~
 secring.gpg
 quiz/key.json
+/google_creds.json
