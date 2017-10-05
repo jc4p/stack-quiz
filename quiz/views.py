@@ -43,7 +43,7 @@ def get_employees(request):
 
     bamboo_auth = (BAMBOO_API_KEY, "x")
 
-    page = requests.get(BAMBOO_URL, auth=bamboo_auth)
+    page = requests.get(BAMBOO_URL, auth=bamboo_auth, verify=False)
     emps = page.json()['employees']
     camp_only = request.GET.get("camp", "false") == "true"
     employees = []
