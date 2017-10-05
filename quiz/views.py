@@ -57,7 +57,7 @@ def get_employees(request):
         # Required fields
         name = emp['nickname'] if emp.get('nickname') else emp['firstName']
         name += " " + emp['lastName']
-        camp = emp['customCompanyEvents'] and '2016 Product Meetup' in emp['customCompanyEvents']
+        camp = 'customCompanyEvents' in emp and '2016 Product Meetup' in emp['customCompanyEvents']
         employee = {'name': name, 'photo': emp['photoUrl'], 'position': emp['jobTitle'],
                     'location': emp['location'], 'gender': emp['gender'], 'department': emp['division']}
         # Trim gender to M/F
