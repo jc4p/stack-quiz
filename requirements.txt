@@ -7,4 +7,3 @@ pylibmc==1.4.1
 requests==1.2.3
 static==0.4
 wsgiref==0.1.2
-uwsgi==2.0.9

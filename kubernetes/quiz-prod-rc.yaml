@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: stackquiz-prod-rc-::BUILDNUM::
+spec:
+  replicas: 4
+  selector:
+    app: stackquiz
+    environment: production
+    commit: "::COMMIT::"
+    buildTimestamp: "::TIMESTAMP::"
+  template:
+    metadata:
+      labels:
+        app: stackquiz
+        environment: production
+        commit: "::COMMIT::"
+        buildTimestamp: "::TIMESTAMP::"
+    spec:
+      containers:
+      - image: gcr.io/general-gke-cluster/stackquiz:latest
+        imagePullPolicy: Always
+        name: stackquiz
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

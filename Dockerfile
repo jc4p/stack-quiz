@@ -1,12 +1,25 @@
-FROM python:2.7
-RUN apt-get -y update
-RUN apt-get -y upgrade
-RUN apt-get -y install libmemcached-dev
-RUN mkdir /opt/quiz/
+FROM janeczku/alpine-kubernetes:3.2
+
+RUN apk --update add \
+    python \
+    py-pip \ 
+    uwsgi-python
+
 ADD . /opt/quiz/
 WORKDIR /opt/quiz/
-RUN pip install -r requirements.txt
+
+RUN apk --update add --virtual builddeps \
+    python-dev \
+    build-base \
+    libmemcached-dev \
+    zlib-dev \
+    musl-dev \
+  && pip install --upgrade pip \
+  && pip install -r requirements.txt \
+  && apk del builddeps \
+  && rm -rf /var/cache/apk/*
+
 EXPOSE 8000
-CMD ["/usr/local/bin/gunicorn","-b","0.0.0.0:8000", "quiz.wsgi"]
+CMD ["/usr/bin/gunicorn","-b","0.0.0.0:8000", "quiz.wsgi"]
 
 

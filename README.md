@@ -16,3 +16,20 @@ Note: This assumes you already have Python and the Heroku Toolbelt installed. If
 
 
 To set this application up on Heroku, follow the instructions in the link to them above to set up an environment, then add a git remote of this repository to your Heroku repo.
+
+## IT-specific notes about deployment
+
+### What builds do
+  - stack-quiz is auto-built in teamcity,
+  - teamcity dev build will put an instance up at http://[ny,co]-itapp[01,02]:10312 to check out
+  - if everything's good with dev instance, manually trigger prod in teamcity
+  - teamcity prod build runs a `kubectl rolling-update` on the resource controller.
+
+### How it is setup in Google Container Engine (GKE)
+  - there are 8 docker containers running at any given time
+  - a `replication controller` handles the proper scheduling of containers
+    - to make the controller, `kubectl create -f gke/quiz-rc.json`
+  - the site is then exposed to the internet via a load balancer
+    - `gkg expose rc stackquiz-prod --port=80 --target-port=8000 --type="LoadBalancer"`
+    - make sure to set IP to static in google console or ip might change
+    - DNS entry is quiz.stackex.com

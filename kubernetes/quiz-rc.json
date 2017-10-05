@@ -1,0 +1,41 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "dnsPolicy": "ClusterFirst",
+        "restartPolicy": "Always",
+        "containers": [
+          {
+            "imagePullPolicy": "Always",
+            "ports": [
+              {
+                "protocol": "TCP",
+                "containerPort": 8000
+              }
+            ],
+            "image": "gcr.io/general-gke-cluster/stackquiz:latest",
+            "name": "stackquiz"
+          }
+        ],
+        "volumes": null
+      },
+      "metadata": {
+        "labels": {
+          "app": "stackquiz"
+        }
+      }
+    },
+    "selector": {
+      "app": "stackquiz"
+    },
+    "replicas": 8
+  },
+  "metadata": {
+    "labels": {
+      "state": "serving"
+    },
+    "name": "stackquiz-prod"
+  },
+  "apiVersion": "v1",
+  "kind": "ReplicationController"
+}
